@@ -13,10 +13,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    # Шаг распаковки вашего архива прямо на сервере GitHub
     - name: Unzip project files
       run: |
-        unzip -o project.zip
+        unzip -o voxy-neoforge-rewrite.zip
         rm voxy-neoforge-rewrite.zip
 
     - name: Set up JDK 21
@@ -29,10 +28,7 @@ jobs:
       uses: gradle/actions/setup-gradle@v4
 
     - name: Build with Gradle
-      run: chmod +x gradlew && ./gradlew build
-
-    - name: Upload compiled JAR
-      uses: actions/upload-artifact@v4
-      with:
-        name: Compiled-Mod
-        path: build/libs/*.jar
+      # Добавлены параметры против дефицита памяти и отключен демон
+      run: |
+        chmod +x gradlew
+        ./gradlew build --no-daemon -Dorg.gradle.jvmargs="-Xmx3g -XX:+UseG1GC"
