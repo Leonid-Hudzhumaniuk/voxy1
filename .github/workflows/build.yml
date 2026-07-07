@@ -27,15 +27,8 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
 
-- name: Build with Gradle
+    - name: Build with Gradle
+      # Добавлены параметры против дефицита памяти и отключен демон
       run: |
-        # Проверяем, есть ли подпапка, и если да — заходим в неё
-        if [ -d "voxy-neoforge-rewrite" ]; then
-          cd voxy-neoforge-rewrite
-        elif [ -d "voxy-neoforge" ]; then
-          cd voxy-neoforge
-        fi
-
-        # Запуск сборки
         chmod +x gradlew
         ./gradlew build --no-daemon -Dorg.gradle.jvmargs="-Xmx3g -XX:+UseG1GC"
